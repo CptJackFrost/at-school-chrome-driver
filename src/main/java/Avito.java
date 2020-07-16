@@ -15,7 +15,10 @@ public class Avito {
         driver.findElement(By.cssSelector("#category option[value='99']")).click();
         driver.findElement(By.cssSelector("#search")).sendKeys("Принтер");
         driver.findElement(By.cssSelector("div[data-marker='search-form/region']")).click();
-
+        driver.findElement(By.cssSelector("input[data-marker='popup-location/region/input']"))
+                .sendKeys("Владивосток");
+        driver.findElement(By.cssSelector("li[data-marker='suggest(0)']")).click();
+        driver.findElement(By.cssSelector("button[@data-marker='popup-location/save-button']")).click();
 
 
         //WebElement params = driver.findElement(By.cssSelector("._1dp226jcDt_jum2k1IGKC_"));
