@@ -43,6 +43,10 @@ public class Avito {
         filtersSubmitButton.click();
 
 
+        WebElement priceFilterOption = driver.findElement(By.xpath("//option[text()='Дороже']"));
+        wait.until(ExpectedConditions.elementToBeClickable(priceFilterOption));
+        priceFilterOption.click();
+
         //WebElement params = driver.findElement(By.cssSelector("._1dp226jcDt_jum2k1IGKC_"));
         //params.click();
         //driver.close();
