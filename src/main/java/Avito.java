@@ -2,6 +2,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -28,8 +29,18 @@ public class Avito {
 
         wait.until(ExpectedConditions.textToBePresentInElement(driver.findElement(By.cssSelector("li[data-marker='suggest(0)']")), "Владивосток"));
         driver.findElement(By.cssSelector("*[data-marker='suggest(0)']")).click();
+
         driver.findElement(By.cssSelector("button[data-marker='popup-location/save-button']")).click();
 
+        WebElement delivery = driver.findElement(By.cssSelector("label[data-marker='delivery-filter']"));
+        if (!delivery.isSelected()){
+            delivery.click();
+        }
+
+        WebElement filtersSubmitButton =
+                driver.findElement(By.cssSelector("button[data-marker='search-filters/submit-button']"));
+        wait.until(ExpectedConditions.elementToBeClickable(filtersSubmitButton));
+        filtersSubmitButton.click();
 
 
         //WebElement params = driver.findElement(By.cssSelector("._1dp226jcDt_jum2k1IGKC_"));
