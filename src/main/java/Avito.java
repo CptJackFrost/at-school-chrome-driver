@@ -6,6 +6,7 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Avito {
@@ -16,7 +17,7 @@ public class Avito {
         WebDriverWait wait = new WebDriverWait(driver, 5);
         driver.manage().window().maximize();
         driver.get("https://www.avito.ru/");
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(20, TimeUnit.SECONDS);
 
         driver.findElement(By.cssSelector("#category option[value='99']")).click();
 
@@ -47,12 +48,14 @@ public class Avito {
         wait.until(ExpectedConditions.elementToBeClickable(priceFilterOption));
         priceFilterOption.click();
 
-        //WebElement params = driver.findElement(By.cssSelector("._1dp226jcDt_jum2k1IGKC_"));
-        //params.click();
-        //driver.close();
-        //driver.quit();
+        List<WebElement> printers = driver.findElements(By.cssSelector(".item_table-wrapper"));
 
+        for (int i = 0; i < 3; i++){
+            System.out.println(printers.get(i).findElement(By.cssSelector("div>.snippet-title-row>h3>a")).getText());
+            System.out.println(printers.get(i).findElement(By.cssSelector("div>.snippet-price-row>.snippet-price")).getText()+ "\n");
+        }
 
+        driver.quit();
 
     }
 }
