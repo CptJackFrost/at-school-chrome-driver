@@ -13,6 +13,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
 
@@ -42,9 +43,9 @@ public class Steps {
         driver.findElement(By.cssSelector(category.value)).click();
     }
 
-    @И("в поле поиска введено значение принтер")
-    public void вПолеПоискаВведеноЗначениеПринтер() {
-        driver.findElement(By.cssSelector("#search")).sendKeys("Принтер");
+    @И("^в поле поиска введено значение (.*)")
+    public void вПолеПоискаВведеноЗначение(String target) {
+        driver.findElement(By.cssSelector("#search")).sendKeys(target.toLowerCase());
     }
 
     @Тогда("кликнуть по выпадающему списку региона")
@@ -52,10 +53,10 @@ public class Steps {
         driver.findElement(By.cssSelector("div[data-marker='search-form/region']")).click();
     }
 
-    @Тогда("в поле регион введено значение Владивосток")
-    public void вПолеРегионВведеноЗначениеВладивосток() {
+    @Тогда("^в поле регион введено значение (.*)")
+    public void вПолеРегионВведеноЗначениеВладивосток(String city) {
         driver.findElement(By.cssSelector("input[data-marker='popup-location/region/input']"))
-                .sendKeys("Владивосток");
+                .sendKeys(city);
     }
 
     @И("нажата кнопка показать объявления")
@@ -64,10 +65,13 @@ public class Steps {
         driver.findElement(By.cssSelector("button[data-marker='popup-location/save-button']")).click();
     }
 
-    @Тогда("открылась страница результаты по запросу принтер")
-    public void открыласьСтраницаРезультатыПоЗапросуПринтер() {
-        //а что еще тут делать-то?
-        System.out.println("открыто\n");
+    @Тогда("^открылась страница результаты по запросу (.*)")
+    public void открыласьСтраницаРезультатыПоЗапросу(String category) {
+        WebElement titleElement = driver.findElement(By.xpath("//h1[@data-marker='page-title/text']"));
+        String title = titleElement.getText().toLowerCase();
+        if (!(title.contains(category))) {
+            throw new NoSuchElementException("Элемента нет");
+        }
     }
 
     @И("активирован чекбокс только с фотографией")
@@ -94,7 +98,7 @@ public class Steps {
     public void вКонсольВыведеноЗначениеНазванияИЦеныПервыхТоваров(int arg0) {
         List<WebElement> printers = driver.findElements(By.cssSelector(".item_table-wrapper"));
 
-        for (int i = 0; i < 3; i++){
+        for (int i = 0; i < arg0; i++){
             System.out.println(printers.get(i).findElement(By.cssSelector("div>.snippet-title-row>h3>a")).getText());
             System.out.println(printers.get(i).findElement(By.cssSelector("div>.snippet-price-row>.snippet-price")).getText()+ "\n");
         }
