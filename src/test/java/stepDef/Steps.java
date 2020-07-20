@@ -57,11 +57,11 @@ public class Steps {
     public void вПолеРегионВведеноЗначениеВладивосток(String city) {
         driver.findElement(By.cssSelector("input[data-marker='popup-location/region/input']"))
                 .sendKeys(city);
+        wait.until(ExpectedConditions.textToBePresentInElement(driver.findElement(By.cssSelector("li[data-marker='suggest(0)']")), city));
     }
 
     @И("нажата кнопка показать объявления")
     public void нажатаКнопкаПоказатьОбъявления() {
-        wait.until(ExpectedConditions.textToBePresentInElement(driver.findElement(By.cssSelector("li[data-marker='suggest(0)']")), "Владивосток"));
         driver.findElement(By.cssSelector("button[data-marker='popup-location/save-button']")).click();
     }
 
