@@ -1,6 +1,7 @@
 package stepDef;
 
 import io.cucumber.java.After;
+import io.cucumber.java.ParameterType;
 import io.cucumber.java.ru.И;
 import io.cucumber.java.ru.Пусть;
 import io.cucumber.java.ru.Тогда;
@@ -19,6 +20,16 @@ public class Steps {
     WebDriver driver = new ChromeDriver();
     WebDriverWait wait = new WebDriverWait(driver, 5);
 
+    @ParameterType(".*")
+    public Category category(String category) {
+        return Category.valueOf(category);
+    }
+
+    @ParameterType(".*")
+    public Price price(String price) {
+        return Price.valueOf(price);
+    }
+
     @Пусть("открыт ресурс авито")
     public void открытРесурсАвито() {
         driver.manage().window().maximize();
@@ -26,9 +37,9 @@ public class Steps {
         driver.get("https://www.avito.ru/");
     }
 
-    @И("в выпадающем списке категорий выбрана оргтехника")
-    public void вВыпадающемСпискеКатегорийВыбранаОргтехника() {
-        driver.findElement(By.cssSelector("#category option[value='99']")).click();
+    @И("в выпадающем списке категорий выбрана {category}")
+    public void вВыпадающемСпискеКатегорийВыбранаОргтехника(Category category) {
+        driver.findElement(By.cssSelector(category.value)).click();
     }
 
     @И("в поле поиска введено значение принтер")
@@ -45,9 +56,6 @@ public class Steps {
     public void вПолеРегионВведеноЗначениеВладивосток() {
         driver.findElement(By.cssSelector("input[data-marker='popup-location/region/input']"))
                 .sendKeys("Владивосток");
-        //wait.until(ExpectedConditions.textToBePresentInElement(driver.findElement(By.cssSelector("li[data-marker='suggest(0)']")), "Владивосток"));
-        //driver.findElement(By.cssSelector("*[data-marker='suggest(0)']")).click();
-
     }
 
     @И("нажата кнопка показать объявления")
@@ -68,12 +76,16 @@ public class Steps {
         wait.until(ExpectedConditions.elementToBeClickable(photoOnly));
         if (!photoOnly.isSelected()){
             photoOnly.click();
+            WebElement filtersSubmitButton =
+                    driver.findElement(By.cssSelector("button[data-marker='search-filters/submit-button']"));
+            wait.until(ExpectedConditions.elementToBeClickable(filtersSubmitButton));
+            filtersSubmitButton.click();
         }
     }
 
-    @И("в выпадающем списке сортировка выбрано значение Дороже")
-    public void вВыпадающемСпискеСортировкаВыбраноЗначениеДороже() {
-        WebElement priceFilterOption = driver.findElement(By.xpath("//option[text()='Дороже']"));
+    @И("в выпадающем списке сортировка выбрано значение {price}")
+    public void вВыпадающемСпискеСортировкаВыбраноЗначениеДороже(Price price) {
+        WebElement priceFilterOption = driver.findElement(By.xpath(price.value));
         wait.until(ExpectedConditions.elementToBeClickable(priceFilterOption));
         priceFilterOption.click();
     }
